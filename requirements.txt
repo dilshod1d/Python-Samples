@@ -19,7 +19,6 @@ scipy==1.4.1              # via seaborn
 seaborn==0.10.1
 six==1.15.0               # via cycler, python-dateutil
 datetime
-colorama==0.4.5
-plotly
+colorama==0.4.4
 
 # code-rain002
