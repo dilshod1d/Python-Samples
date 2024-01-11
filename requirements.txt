@@ -9,7 +9,7 @@
 cycler==0.10.0            # via matplotlib
 kiwisolver==1.2.0         # via matplotlib
 matplotlib==3.2.1
-numpy==1.19.5
+numpy==1.21.3
 cython>=0.29.14
 pandas==1.0.4
 plotly==5.11.0
