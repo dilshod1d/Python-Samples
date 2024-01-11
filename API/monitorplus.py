@@ -1,21 +1,23 @@
 import sys
 import json
 
+
+
 from pprint import pprint
 
 modules_required = []
 
 try:
-    import requests as r
+    import pip._vendor.requests  as r
 except:
-    modules_required.append('requests')
+    modules_required.append('pip._vendor.requests')
     print("Module 'requests' not found.")
 
 
 try:
-    import colorama
-    from colorama import Fore, Style
-    colorama.init(strip=False)
+    import pip._vendor.colorama
+    from pip._vendor.colorama import Fore, Style
+    pip._vendor.colorama.init(strip=False)
     use_colour_text = True
 except:
     use_colour_text = False
