@@ -21,5 +21,6 @@ six==1.16.0               # via cycler, python-dateutil
 datetime
 colorama
 plotly
+requests==2.31.0
 
 # code-rain002
