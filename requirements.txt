@@ -6,7 +6,6 @@
 #
 #    pip-compile
 #
-Cython>=0.29.14
 numpy==1.25.0
 cycler==0.10.0            # via matplotlib
 kiwisolver==1.2.0         # via matplotlib
