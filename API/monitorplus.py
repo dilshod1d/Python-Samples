@@ -1,5 +1,7 @@
 import sys
 import json
+import logging
+from typing import Optional, Any
 
 
 
@@ -739,36 +741,34 @@ class IData:
     @session_manager
     @help_manager
     def get_dataset_values_rc(self,
-                           Series: list,
-                           SessionToken: str = None,
-                           StartDate: Optional[str] = "Earliest",
-                           EndDate: Optional[str] = "Latest",
-                           Periods: Optional[int] = 0,
-                           CommonStart: Optional[bool] = False,
-                           CommonEnd: Optional[bool] = False,
-                           CommonUA: Optional[bool] = True,
-                           DateFormat: Optional[str] = "YYYY-MM-DD",
-                           DateOrder: Optional[str] = "asc",
-                           Prefill: Optional[bool] = False,
-                           Fill: Optional[bool] = False,
-                           Frequency: Optional[str] = 'd',
-                           Postfill: Optional[bool] = False,
-                           Rounding: Optional[str] = 'auto',
-                           ReturnMetadata: Optional[bool] = False,
-                           ReturnAccess: Optional[bool] = False,
-                           ReturnParameters: Optional[bool] = False,
-                           PrefillOptions: Optional[dict] = None,
-                           FillOptions: Optional[dict] = None,
-                           FrequencyOptions: Optional[dict] = None,
-                           PostfillOptions: Optional[dict] = None,
-                           Sparse: Optional[str] = None,
-                           SparseOptions: Optional[dict] = None,
-                           NAValue: Optional[Any] = None) -> list:
-
+                              Series: list,
+                              SessionToken: str = None,
+                              StartDate: Optional[str] = "Earliest",
+                              EndDate: Optional[str] = "Latest",
+                              Periods: Optional[int] = 0,
+                              CommonStart: Optional[bool] = False,
+                              CommonEnd: Optional[bool] = False,
+                              CommonUA: Optional[bool] = True,
+                              DateFormat: Optional[str] = "YYYY-MM-DD",
+                              DateOrder: Optional[str] = "asc",
+                              Prefill: Optional[bool] = False,
+                              Fill: Optional[bool] = False,
+                              Frequency: Optional[str] = 'd',
+                              Postfill: Optional[bool] = False,
+                              Rounding: Optional[str] = 'auto',
+                              ReturnMetadata: Optional[bool] = False,
+                              ReturnAccess: Optional[bool] = False,
+                              ReturnParameters: Optional[bool] = False,
+                              PrefillOptions: Optional[dict] = None,
+                              FillOptions: Optional[dict] = None,
+                              FrequencyOptions: Optional[dict] = None,
+                              PostfillOptions: Optional[dict] = None,
+                              Sparse: Optional[str] = None,
+                              SparseOptions: Optional[dict] = None,
+                              NAValue: Optional[Any] = None) -> Optional[list]:
 
         payload = {
-        #         "SessionToken": session_token if session_token else self.session_token,
-           "SessionToken": SessionToken if SessionToken else self.session_token,
+            "SessionToken": SessionToken if SessionToken else self.session_token,
             "Series": Series,
             "StartDate": StartDate,
             "EndDate": EndDate,
@@ -785,7 +785,7 @@ class IData:
             "Rounding": Rounding,
             "ReturnMetadata": str(ReturnMetadata).lower(),
             "ReturnAccess": str(ReturnAccess).lower(),
-            "ReturnParameters": str(ReturnParameters).lower(),
+            "ReturnParameters": str(ReturnParameters).lower()
         }
 
         if PrefillOptions:
@@ -809,19 +809,18 @@ class IData:
         if NAValue:
             payload['NAValue'] = NAValue
 
+        try:
+            resp = self.__api_call("GetValuesRC", payload, "POST")
 
+            if resp:
+                return resp
+            else:
+                logging.error("API call returned an empty response.")
+                return None
 
-        """
-        As get_dataset_values above but returned formatted row x column.
-        https://www.idatamedia.org/api-docs#getdatasetvaluesrc
-        """
-
-
-        resp = self.__api_call("GetValuesRC", payload, "POST")
-
-        if resp:
-            return resp
-
+        except Exception as e:
+            logging.exception("An error occurred during the API call.")
+            return None
     @session_manager
     @help_manager
     def get_dataset_values_for_date(self,
